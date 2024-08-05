@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>商品位置查找網站</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>查找商品位置</h1>
+    <input type="text" id="productSearch" placeholder="輸入商品名稱">
+    <button onclick="searchProduct()">查找</button>
+    <div id="results"></div>
+  </div>
+
+  <!-- 自定義JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
