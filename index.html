@@ -1,23 +1,59 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>商品位置查找網站</title>
-  <link rel="stylesheet" href="styles.css">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品定位查詢</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>查找商品位置</h1>
-    <input type="text" id="productSearch" placeholder="輸入商品名稱">
-    <button onclick="searchProduct()">查找</button>
-    <div id="results"></div>
-  </div>
+    <h1>產品定位查詢</h1>
+    <input type="text" id="productName" placeholder="輸入產品名稱">
+    <button onclick="findProduct()">查詢</button>
+    <p id="result"></p>
 
-  <!-- 自定義JavaScript -->
-  <script src="app.js"></script>
+    <script>
+        // Firebase 初始化
+        const firebaseConfig = {
+          apiKey: "AIzaSyCYJ891mFuTMr0hrBkUQO8vHBwEvDX7eUA",
+          authDomain: "collections-27fed.firebaseapp.com",
+          projectId: "collections-27fed",
+          storageBucket: "collections-27fed.appspot.com",
+          messagingSenderId: "168362219821",
+          appId: "1:168362219821:web:5b8a59c03e69d77254dba4"
+        };
+
+        // 初始化Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // 查詢產品
+        async function findProduct() {
+            const productName = document.getElementById('productName').value;
+            const resultElement = document.getElementById('result');
+
+            if (!productName) {
+                resultElement.innerText = "請輸入產品名稱";
+                return;
+            }
+
+            try {
+                // 這裡假設storeId已經固定為"A"，可以根據需求動態變更
+                const storeDoc = await db.collection('stores').doc('storeId').collection('products').where('name', '==', productName).get();
+
+                if (storeDoc.empty) {
+                    resultElement.innerText = "找不到產品";
+                } else {
+                    storeDoc.forEach(doc => {
+                        resultElement.innerText = `產品位置: ${doc.data().position}`;
+                    });
+                }
+            } catch (error) {
+                console.error("查詢失敗: ", error);
+                resultElement.innerText = "查詢失敗，請稍後再試";
+            }
+        }
+    </script>
 </body>
 </html>
