@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>查詢貨品所在位置</title>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,29 +42,19 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 查詢貨品位置的函數
-    async function searchProduct() {
-        const productName = document.getElementById("productName").value;
-        const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = ""; // 清空結果
-
-        if (productName) {
-            const querySnapshot = await db.collection("products").where("name", "==", productName).get();
-            if (querySnapshot.empty) {
-                resultDiv.innerHTML = "未找到該貨品。";
-            } else {
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    resultDiv.innerHTML += `<p>貨品名稱: ${data.name}, 所在位置: ${data.location}</p>`;
-                });
-            }
-        } else {
-            resultDiv.innerHTML = "請輸入貨品名稱。";
-        }
-    }
-
-    // 綁定查詢按鈕的事件
-    document.getElementById("searchBtn").addEventListener("click", searchProduct);
+    db.collection('users')
+      .add({
+        first: 'Dez',
+        last: 'Chuang',
+        gender: 'male'
+      })
+      .then(function(docRef) {
+        console.log('Document written with ID: ', docRef.id)
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error)
+      })
+    
 </script>
 
 </body>
