@@ -3,57 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>產品定位查詢</title>
+    <title>查詢貨品所在位置</title>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>產品定位查詢</h1>
-    <input type="text" id="productName" placeholder="輸入產品名稱">
-    <button onclick="findProduct()">查詢</button>
-    <p id="result"></p>
 
-    <script>
-        // Firebase 初始化
-        const firebaseConfig = {
-          apiKey: "AIzaSyCYJ891mFuTMr0hrBkUQO8vHBwEvDX7eUA",
-          authDomain: "collections-27fed.firebaseapp.com",
-          projectId: "collections-27fed",
-          storageBucket: "collections-27fed.appspot.com",
-          messagingSenderId: "168362219821",
-          appId: "1:168362219821:web:5b8a59c03e69d77254dba4"
-        };
+<h1>查詢貨品所在位置</h1>
+<input type="text" id="productName" placeholder="輸入貨品名稱" />
+<button id="searchBtn">查詢</button>
 
-        // 初始化Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+<h2>查詢結果:</h2>
+<div id="result"></div>
 
-        // 查詢產品
-        async function findProduct() {
-            const productName = document.getElementById('productName').value;
-            const resultElement = document.getElementById('result');
+<script>
+    // Firebase 配置
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6KRCZvGzDPXF7vmIhQGuoB9be7f11K4E",
+        authDomain: "retail-ee926.firebaseapp.com",
+        projectId: "retail-ee926",
+        storageBucket: "retail-ee926.appspot.com",
+        messagingSenderId: "3730071878",
+        appId: "1:3730071878:web:f5c0a3753b8206e6264547",
+        measurementId: "G-LJFXTH5WS3"
+    };
 
-            if (!productName) {
-                resultElement.innerText = "請輸入產品名稱";
-                return;
+    // 初始化 Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 查詢貨品位置的函數
+    async function searchProduct() {
+        const productName = document.getElementById("productName").value;
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = ""; // 清空結果
+
+        if (productName) {
+            const querySnapshot = await db.collection("products").where("name", "==", productName).get();
+            if (querySnapshot.empty) {
+                resultDiv.innerHTML = "未找到該貨品。";
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    resultDiv.innerHTML += `<p>貨品名稱: ${data.name}, 所在位置: ${data.location}</p>`;
+                });
             }
-
-            try {
-                // 這裡假設storeId已經固定為"A"，可以根據需求動態變更
-                const storeDoc = await db.collection('stores').doc('storeId').collection('products').where('name', '==', productName).get();
-
-                if (storeDoc.empty) {
-                    resultElement.innerText = "找不到產品";
-                } else {
-                    storeDoc.forEach(doc => {
-                        resultElement.innerText = `產品位置: ${doc.data().position}`;
-                    });
-                }
-            } catch (error) {
-                console.error("查詢失敗: ", error);
-                resultElement.innerText = "查詢失敗，請稍後再試";
-            }
+        } else {
+            resultDiv.innerHTML = "請輸入貨品名稱。";
         }
-    </script>
+    }
+
+    // 綁定查詢按鈕的事件
+    document.getElementById("searchBtn").addEventListener("click", searchProduct);
+</script>
+
 </body>
 </html>
