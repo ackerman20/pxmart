@@ -53,8 +53,8 @@ function read_db() {
         //console.log("user_name: " + retrieve_data.user_name);
         //console.log("user_name_password: " + retrieve_data.user_name_password);
         call_loop_print(retrieve_data);
-        document.getElementById("display_read_data").innerHTML =  "<pre>" + "name: " + retrieve_data.name +
-                '\n' + "location: " + retrieve_data.location + "</pre>";
+        document.getElementById("display_read_data").innerHTML =  retrieve_data.name + "位在: " + retrieve_data.location;
+        
         })
     function call_loop_print(retrieve_data){
         for (var r=0;r<Object.entries(retrieve_data).length;r++){
