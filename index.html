@@ -24,14 +24,19 @@
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
+    #img {
+        height: 850px;
+        width: auto;
+    }
     @media (max-width: 768px) {
         .chat-box {
             position: absolute;
-            top: 50%; /* 調整為適合的垂直位置 */
+            top: 40%; /* 調整為適合的垂直位置 */
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1;
             width: 90%; /* 可根據需要調整寬度 */
+            padding: 60px;
         }
     }
 </style>
@@ -39,16 +44,13 @@
     <h1>商品查詢</h1>
     <div class="row">
         <div class="col-sm-6">
-          <img src="img/px.png">
-          <p>想要找什麼商品，可以直接詢問我，我會告訴你在哪一條走道喔</p>
+            <img src="img/px.png">
         </div>
         <div class="col-sm-6 chat-box">
-            <form class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="在此輸入你想要尋找的商品名稱">
-                <button class="btn btn-primary" id="read_data_from_firebase" type="button">查詢</button>
-            </form>
+            <input type="text" placeholder="輸入商品" id="user_name_password">
+            <button id="read_data_from_firebase">查詢</button>
             <div class="firebase_display_text">
-                <p id="display_read_data">Before: <'empty'></p>
+                <p id="display_read_data" style="margin: 10px auto;">不知道商品擺在哪嗎，來問我吧</p>
             </div>
         </div>
     </div>
