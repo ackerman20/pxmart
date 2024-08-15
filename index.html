@@ -12,18 +12,6 @@
     body{
         text-align: center;
     }
-    .firebase_display_text{
-        background-color: white;
-        border-radius: 8px;
-        width: auto;
-        height: auto;
-        margin: 0;
-        position: absolute;
-        top: 80%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
     #img {
         height: 850px;
         width: auto;
@@ -31,13 +19,18 @@
     @media (max-width: 768px) {
         .chat-box {
             position: absolute;
-            top: 40%; /* 調整為適合的垂直位置 */
+            top: 50%; /* 調整為適合的垂直位置 */
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1;
             width: 90%; /* 可根據需要調整寬度 */
-            padding: 60px;
         }
+    }
+    .write_data_to_firebase{
+        opacity: 0;
+    }
+    function hideButton() {
+        document.getElementById("write_data_to_firebase").style.display = "none";
     }
 </style>
 <body>
@@ -46,15 +39,19 @@
         <div class="col-sm-6">
             <img src="img/px.png">
         </div>
-        <div class="col-sm-6 chat-box">
-            <input type="text" placeholder="輸入商品" id="user_name_password">
-            <button id="read_data_from_firebase">查詢</button>
-            <div class="firebase_display_text">
-                <p id="display_read_data" style="margin: 10px auto;">不知道商品擺在哪嗎，來問我吧</p>
+        <div class="col-sm-6">
+            <div class="input-group mb-3">
+                <input type="text" placeholder="user password" id="user_name_password" class="form-control">
+                <button id="read_data_from_firebase" onclick="read_db()" class="btn btn-success" type="submit" style="background-color:rgb(0, 0, 255);">查詢</button>
             </div>
+            <p id="response">找不到商品嗎，我來告訴你擺在哪</p>
         </div>
     </div>
     
-<script src="firebase.js" type="module"></script>
+        
+        <div>
+            <button id="write_data_to_firebase" onclick="write_db()">Write Data to Firebase</button>
+        </div>
+    <script src="firebase.js" type="module"></script>
 </body>
 </html>
