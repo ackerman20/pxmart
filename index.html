@@ -12,11 +12,11 @@
     body{
         text-align: center;
     }
-    #img {
-        height: 850px;
-        width: auto;
-    }
     @media (max-width: 768px) {
+        #img {
+            max-width: 100%;
+            height: auto;
+        }
         .chat-box {
             position: absolute;
             top: 50%; /* 調整為適合的垂直位置 */
@@ -29,29 +29,26 @@
     .write_data_to_firebase{
         opacity: 0;
     }
-    function hideButton() {
-        document.getElementById("write_data_to_firebase").style.display = "none";
+    .write_data_to_firebase{
+        display: none;
     }
 </style>
 <body>
     <h1>商品查詢</h1>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6" id="left">
             <img src="img/px.png">
         </div>
         <div class="col-sm-6">
             <div class="input-group mb-3">
-                <input type="text" placeholder="user password" id="user_name_password" class="form-control">
-                <button id="read_data_from_firebase" onclick="read_db()" class="btn btn-success" type="submit" style="background-color:rgb(0, 0, 255);">查詢</button>
+                <input type="text" placeholder="輸入產品名稱" id="retail" class="form-control">
+                <button id="read" class="btn btn-success" type="submit" style="background-color:rgb(0, 0, 255);">查詢</button>
             </div>
             <p id="response">找不到商品嗎，我來告訴你擺在哪</p>
         </div>
     </div>
+
     
-        
-        <div>
-            <button id="write_data_to_firebase" onclick="write_db()">Write Data to Firebase</button>
-        </div>
     <script src="firebase.js" type="module"></script>
 </body>
 </html>
