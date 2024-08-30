@@ -1,0 +1,12 @@
+body{
+        text-align: center;
+    }
+    @media (max-width: 768px) {
+        #left{
+            max-width: 100%;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
