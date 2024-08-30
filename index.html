@@ -7,43 +7,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="icon" href="data:,">
     <title>商品查詢</title>
+    <meta property="og:url" content="https://ackerman20.github.io/pxmart/index.html" />
+	<meta property="og:image" content="https://ackerman20.github.io/pxmart/img/px.png" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+	<meta name="title" content="商品查詢位置查詢">
+	<meta name="description" content="提供大家搜尋想要尋找產品擺設在什麼位置">
 </head>
-<style>
-    body{
-        text-align: center;
-    }
-    @media (max-width: 768px) {
-        #img {
-            max-width: 100%;
-            height: auto;
-        }
-        .chat-box {
-            position: absolute;
-            top: 50%; /* 調整為適合的垂直位置 */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            width: 90%; /* 可根據需要調整寬度 */
-        }
-    }
-
-</style>
 <body>
-    <h1>商品查詢</h1>
-    <div class="row">
-        <div class="col-sm-6" id="left">
+    <h1>商品位置查詢</h1>
+    <div class="row" id="left">
+        <div class="col-md-6">
             <img src="img/px.png">
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-6">
             <div class="input-group mb-3">
-                <input type="text" placeholder="輸入產品名稱" id="retail" class="form-control">
+                <input type="text" placeholder="輸入產品名稱或是條碼" id="retail" class="form-control">
                 <button id="read" class="btn btn-success" type="submit" style="background-color:rgb(0, 0, 255);">查詢</button>
             </div>
             <p id="response">找不到商品嗎，我來告訴你擺在哪</p>
         </div>
     </div>
-
-    
     <script src="firebase.js" type="module"></script>
 </body>
 </html>
