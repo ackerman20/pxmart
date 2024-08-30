@@ -21,11 +21,40 @@ document.getElementById("read").addEventListener("click", function(){
     var retrieve_data = '';
     var responseText = document.getElementById("response");
     responseText.textContent = "";
-    responseText.style.whiteSpace = "pre-line";
+    responseText.style.whiteSpace = "pre-line"; // 設置 CSS 樣式以顯示換行
     console.log("DEBUG: Read function");
 
+    // 檢查 retailId 是否包含"顯示條碼"
+    if (retailId.includes("顯示條碼")) {
+        // 刪除"顯示條碼"
+        retailId = retailId.replace("顯示條碼", "").trim();
+        
+        // 從資料庫中查詢所有資料
+        connect_db = ref(db, 'Y/');
+        onValue(connect_db, (snapshot) => {
+            retrieve_data = snapshot.val();
+            var matchedItems = [];
+            
+            // 遍歷所有資料,查找包含 retailId 的項目
+            for (var key in retrieve_data) {
+                if (retrieve_data.hasOwnProperty(key)) {
+                    if (retrieve_data[key].name.includes(retailId)) {
+                        var barcode = key;
+                        matchedItems.push(retrieve_data[key].name + " 擺在: " + retrieve_data[key].location + "\n條碼: " + barcode);
+                    }
+                }
+            }
+
+            // 顯示匹配的項目或查無資料
+            if (matchedItems.length > 0) {
+                responseText.textContent = matchedItems.join("\n"); // 使用 \n 來換行
+            } else {
+                responseText.textContent = "查無此商品";
+            }
+        });
+    } 
     // 檢查 retailId 是否為空
-    if (retailId === "") {
+    else if (retailId === "") {
         responseText.textContent = "查無此商品";
     } 
     // 檢查 retailId 是否包含特殊字元（非數字和非中文字）
@@ -34,13 +63,13 @@ document.getElementById("read").addEventListener("click", function(){
     } 
     // 檢查 retailId 是否為繁體中文字
     else if (/^[\u4E00-\u9FFF]+$/.test(retailId)) { // 檢查是否為繁體中文字
-        // 如果是繁體中文字，從資料庫中查詢所有資料
+        // 如果是繁體中文字,從資料庫中查詢所有資料
         connect_db = ref(db, 'Y/');
         onValue(connect_db, (snapshot) => {
             retrieve_data = snapshot.val();
             var matchedItems = [];
             
-            // 遍歷所有資料，查找包含 retailId 的項目
+            // 遍歷所有資料,查找包含 retailId 的項目
             for (var key in retrieve_data) {
                 if (retrieve_data.hasOwnProperty(key)) {
                     if (retrieve_data[key].name.includes(retailId)) {
@@ -48,9 +77,10 @@ document.getElementById("read").addEventListener("click", function(){
                     }
                 }
             }
+
             // 顯示匹配的項目或查無資料
             if (matchedItems.length > 0) {
-                responseText.textContent = matchedItems.join("\n");
+                responseText.textContent = matchedItems.join("\n"); // 使用 \n 來換行
             } else {
                 responseText.textContent = "查無此商品";
             }
@@ -63,7 +93,7 @@ document.getElementById("read").addEventListener("click", function(){
             retrieve_data = snapshot.val();
             if (retrieve_data) {
                 call_loop_print(retrieve_data);
-                var Text = retrieve_data.name + " 擺在 : " + retrieve_data.location;
+                var Text = retrieve_data.name + " 擺在: " + retrieve_data.location;
                 responseText.textContent = Text;
             } else {
                 responseText.textContent = "查無此商品";
