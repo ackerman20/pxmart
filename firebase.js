@@ -12,6 +12,21 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+var db = getDatabase();
+var topLevelSelect = document.getElementById("topLevelSelect");
+
+// 獲取最上層資料夾選項
+onValue(ref(db), (snapshot) => {
+    const topLevelData = snapshot.val();
+    for (const key in topLevelData) {
+        if (topLevelData.hasOwnProperty(key)) {
+            var option = document.createElement("option");
+            option.value = key;
+            option.textContent = key;
+            topLevelSelect.appendChild(option);
+        }
+    }
+});
 
 document.getElementById("read").addEventListener("click", function(){
     var db = getDatabase();
@@ -20,17 +35,21 @@ document.getElementById("read").addEventListener("click", function(){
     var connect_db;
     var retrieve_data = '';
     var responseText = document.getElementById("response");
+    var selectedTopLevel = topLevelSelect.value; // 獲取選中的資料夾
     responseText.textContent = "";
     responseText.style.whiteSpace = "pre-line"; // 設置 CSS 樣式以顯示換行
     console.log("DEBUG: Read function");
 
     // 檢查 retailId 是否包含"顯示條碼"
-    if (retailId.includes("顯示條碼")) {
+    if (selectedTopLevel === "") {
+        responseText.textContent = "請選擇分店";
+    }
+    else if (retailId.includes("顯示條碼")) {
         // 刪除"顯示條碼"
         retailId = retailId.replace("顯示條碼", "").trim();
         
         // 從資料庫中查詢所有資料
-        connect_db = ref(db, 'Y/');
+        connect_db = ref(db, selectedTopLevel + '/');
         onValue(connect_db, (snapshot) => {
             retrieve_data = snapshot.val();
             var matchedItems = [];
@@ -44,7 +63,6 @@ document.getElementById("read").addEventListener("click", function(){
                     }
                 }
             }
-
             // 顯示匹配的項目或查無資料
             if (matchedItems.length > 0) {
                 responseText.textContent = matchedItems.join("\n"); // 使用 \n 來換行
@@ -64,7 +82,7 @@ document.getElementById("read").addEventListener("click", function(){
     // 檢查 retailId 是否為繁體中文字
     else if (/^[\u4E00-\u9FFF]+$/.test(retailId)) { // 檢查是否為繁體中文字
         // 如果是繁體中文字,從資料庫中查詢所有資料
-        connect_db = ref(db, 'Y/');
+        connect_db = ref(db, selectedTopLevel + '/');
         onValue(connect_db, (snapshot) => {
             retrieve_data = snapshot.val();
             var matchedItems = [];
@@ -88,7 +106,7 @@ document.getElementById("read").addEventListener("click", function(){
     } 
     // 檢查 retailId 是否為數字
     else if (!isNaN(retailId)) {
-        connect_db = ref(db, 'Y/' + retailId + '/');
+        connect_db = ref(db, selectedTopLevel + '/' + retailId + '/');
         onValue(connect_db, (snapshot) => {
             retrieve_data = snapshot.val();
             if (retrieve_data) {
@@ -100,6 +118,7 @@ document.getElementById("read").addEventListener("click", function(){
             }
         });
     } else {
+
         responseText.textContent = "查無此商品";
     }
     retailInput.value = "";
