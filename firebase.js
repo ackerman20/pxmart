@@ -82,6 +82,9 @@ document.getElementById("read").addEventListener("click", function(){
                 resultText += "\n以上為部分搜尋結果,如皆不是你想找的商品請縮小範圍重新查詢";
             }
             responseText.textContent = resultText;
+            if (matchedItems.length < 1) {
+                responseText.textContent = "查無相關商品";
+            }
         });
     }
     // 檢查 retailId 是否為數字
@@ -98,7 +101,6 @@ document.getElementById("read").addEventListener("click", function(){
             }
         });
     } else {
-
         responseText.textContent = "查無相關商品";
     }
     retailInput.value = "";
